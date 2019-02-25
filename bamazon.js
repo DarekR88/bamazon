@@ -75,7 +75,7 @@ function validatePurchase() {
 }
 
 function updateStock() {
-    var query = connection.query(
+    connection.query(
         "UPDATE products SET ? WHERE ?",
         [
           {
