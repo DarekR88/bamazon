@@ -17,6 +17,7 @@ connection.connect(function (err) {
     displayProducts()
 });
 
+let depArr = ['personal care', 'electronics', 'camping']
 let productsArr = [];
 let chosenItem;
 let quantity;
@@ -25,18 +26,38 @@ let stock;
 
 
 function displayProducts() {
-    console.log("Selecting all products...\n");
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         for (let i = 0; i < res.length; i++) {
             console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " + res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
             console.log("----------------------------------------------------------------")
-            productsArr.push(res[i].product_name)
         }
-        purchasePrompt()
+        chooseDep()
     });
 }
 
+function chooseDep() {
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "department",
+            message: "Welcome to Bamazon, what department would you like to shop in today?",
+            choices: depArr
+        }
+    ]).then(function (res) {
+        let department = res.department
+        let sql = "SELECT * FROM products WHERE department_name = " + mysql.escape(department)
+        connection.query(sql, function (err, res) {
+            if (err) throw err;
+            for (let i = 0; i < res.length; i++) {
+                console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " + res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
+                console.log("----------------------------------------------------------------")
+                productsArr.push(res[i].product_name)
+            }
+            purchasePrompt()
+        });
+    });
+}
 
 function purchasePrompt() {
     inquirer.prompt([
