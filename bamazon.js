@@ -29,7 +29,11 @@ let stock;
 function displayProducts() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
-        console.table(res)
+        for (let i = 0; i < res.length; i++) {
+            console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " +
+                res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
+            console.log("----------------------------------------------------------------")
+        }
         chooseDep()
     });
 }
@@ -47,8 +51,10 @@ function chooseDep() {
         let sql = "SELECT * FROM products WHERE department_name = " + mysql.escape(department)
         connection.query(sql, function (err, res) {
             if (err) throw err;
-            console.table(res)
             for (let i = 0; i < res.length; i++) {
+                console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " +
+                    res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
+                console.log("----------------------------------------------------------------")
                 productsArr.push(res[i].product_name)
             }
             purchasePrompt()
