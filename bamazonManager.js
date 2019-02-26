@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require('inquirer');
+const cTable = require('console.table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -55,11 +56,7 @@ function options() {
 function displayProducts() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
-        for (let i = 0; i < res.length; i++) {
-            console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " +
-                res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
-            console.log("----------------------------------------------------------------");
-        }
+        console.table(res)
         connection.end();
     });
 }

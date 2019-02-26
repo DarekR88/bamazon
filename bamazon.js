@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require('inquirer');
+const cTable = require('console.table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -28,11 +29,7 @@ let stock;
 function displayProducts() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
-        for (let i = 0; i < res.length; i++) {
-            console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " +
-                res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
-            console.log("----------------------------------------------------------------")
-        }
+        console.table(res)
         chooseDep()
     });
 }
@@ -50,10 +47,8 @@ function chooseDep() {
         let sql = "SELECT * FROM products WHERE department_name = " + mysql.escape(department)
         connection.query(sql, function (err, res) {
             if (err) throw err;
+            console.table(res)
             for (let i = 0; i < res.length; i++) {
-                console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " +
-                    res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
-                console.log("----------------------------------------------------------------")
                 productsArr.push(res[i].product_name)
             }
             purchasePrompt()
@@ -89,11 +84,13 @@ function validatePurchase() {
             if (res[i].product_name === chosenItem && res[i].stock_quantity >= quantity) {
                 totalCost = quantity * res[i].price
                 stock = res[i].stock_quantity - quantity
+                updateStock()
             } else if (res[i].product_name === chosenItem && res[i].stock_quantity < quantity) {
-                console.log("Insufficient quantity!")
+                console.log("Insufficient stock!")
+                purchasePrompt()
             }
         }
-        updateStock()
+        
     });
 }
 
