@@ -29,7 +29,8 @@ function displayProducts() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         for (let i = 0; i < res.length; i++) {
-            console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " + res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
+            console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " +
+                res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
             console.log("----------------------------------------------------------------")
         }
         chooseDep()
@@ -50,7 +51,8 @@ function chooseDep() {
         connection.query(sql, function (err, res) {
             if (err) throw err;
             for (let i = 0; i < res.length; i++) {
-                console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " + res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
+                console.log(res[i].product_name + " | " + "$" + res[i].price + " | " + res[i].department_name + " | " +
+                    res[i].stock_quantity + " in stock" + " | " + " ID # " + res[i].item_id)
                 console.log("----------------------------------------------------------------")
                 productsArr.push(res[i].product_name)
             }
@@ -77,7 +79,7 @@ function purchasePrompt() {
         quantity = res.quantity
         validatePurchase()
     });
-    
+
 }
 
 function validatePurchase() {
@@ -87,7 +89,7 @@ function validatePurchase() {
             if (res[i].product_name === chosenItem && res[i].stock_quantity >= quantity) {
                 totalCost = quantity * res[i].price
                 stock = res[i].stock_quantity - quantity
-            } else if (res[i].product_name === chosenItem && res[i].stock_quantity < quantity){
+            } else if (res[i].product_name === chosenItem && res[i].stock_quantity < quantity) {
                 console.log("Insufficient quantity!")
             }
         }
@@ -99,17 +101,17 @@ function updateStock() {
     connection.query(
         "UPDATE products SET ? WHERE ?",
         [
-          {
-            stock_quantity: stock
-          },
-          {
-            product_name: chosenItem
-          }
+            {
+                stock_quantity: stock
+            },
+            {
+                product_name: chosenItem
+            }
         ],
-        function(err, res) {
+        function (err, res) {
             if (err) throw err;
             console.log("Your total is $" + totalCost);
             connection.end();
         }
-      );
+    );
 }
