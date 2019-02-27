@@ -73,7 +73,13 @@ function purchasePrompt() {
         {
             type: "input",
             name: "quantity",
-            message: "How many would you like?"
+            message: "How many would you like?",
+            validate: function (value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            }
         }
     ]).then(function (res) {
         chosenItem = res.item
@@ -96,7 +102,7 @@ function validatePurchase() {
                 purchasePrompt()
             }
         }
-        
+
     });
 }
 

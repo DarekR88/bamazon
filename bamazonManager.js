@@ -112,7 +112,13 @@ function inventoryPrompt() {
         {
             type: "input",
             name: "quantity",
-            message: "How much of this item would you like to add to inventory?"
+            message: "How much of this item would you like to add to inventory?",
+            validate: function (value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            }
         }
     ]).then(function (res) {
         chosenItem = res.item
@@ -154,7 +160,13 @@ function addItem() {
         {
             type: 'input',
             name: 'price', 
-            message: 'What will be the price of this new item?'
+            message: 'What will be the price of this new item?',
+            validate: function (value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            }
         },
         {
             type: "list",
@@ -165,7 +177,13 @@ function addItem() {
         {
             type: "input",
             name: "quantity",
-            message: "How much stock would you like to order?"
+            message: "How much stock would you like to order?",
+            validate: function (value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            }
         }
     ]).then(function (res) {
         item = res.item;
