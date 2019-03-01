@@ -122,32 +122,38 @@ function inventoryPrompt() {
         }
     ]).then(function (res) {
         chosenItem = res.item
-        quantity = res.quantity
+        quantity = parseInt(res.quantity)
         connection.query("SELECT * FROM products", function (err, response) {
             if (err) throw err;
             for (let i = 0; i < response.length; i++) {
                 if (response[i].product_name === chosenItem){
-                    stockLeft = response[i].stock_quantity
+                    stockLeft = parseInt(response[i].stock_quantity)
+                    totalStock = stockLeft += quantity
+                    updateStock()
+                    console.log("Stock has been updated.")
+                    connection.end()
                 }
             }
         });
-        totalStock = stockLeft += quantity
-        connection.query(
-            "UPDATE products SET ? WHERE ?",
-            [
-                {
-                    stock_quantity: totalStock
-                },
-                {
-                    product_name: chosenItem 
-                }
-            ],
-            function (err, res) {
-                console.log(res.affectedRows + " products updated!\n");
-            }
-        );
-        connection.end();
     });
+}
+
+function updateStock() {
+    connection.query(
+        "UPDATE products SET ? WHERE ?",
+        [
+            {
+                stock_quantity: totalStock
+            },
+            {
+                product_name: chosenItem 
+            }
+        ],
+        function (err, res) {
+            if (err) throw err;
+            "products updated!\n"
+        }
+    );
 }
 
 function addItem() {
