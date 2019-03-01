@@ -27,6 +27,6 @@ If "add a new product" is selected the user will be prompted to input the name, 
 ![optFour](images/manOpt4.PNG?raw=true "manager option 4")
 
 ### Node modules required: 
-mysql
-inquirer
+mysql<br>
+inquirer<br>
 console.table
