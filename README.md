@@ -25,3 +25,8 @@ If "add to inventory" is selected a list of all products and their stock status 
 
 If "add a new product" is selected the user will be prompted to input the name, price, and stock quantity for the product they would like to add. After filling out the prompts the user will be given a message that tells them the product they added has been added to list of available products.
 ![optFour](images/manOpt4.PNG?raw=true "manager option 4")
+
+### Node modules required: 
+mysql
+inquirer
+console.table
